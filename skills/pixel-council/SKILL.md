@@ -20,22 +20,53 @@ Here's why the reference files matter: without them, you'll produce generic outp
 
 **Skip this step entirely if:**
 - The request is a component-level fix ("fix this button's hover state", "update the card shadow")
-- All context is already clear from the prompt + codebase scan
-- The user invoked with full context (e.g., "build a settings page, Apple HIG, React, mobile-first")
+- ALL of the following are clear from the prompt + codebase: design system, scope, tech stack, AND viewport target
+
+**Viewport target is clear when** the user explicitly said "mobile", "desktop", or "responsive" — OR the codebase makes it unambiguous (React Native → mobile, Electron → desktop). If neither, you MUST ask. Never default to mobile on a web project.
 
 Otherwise, **first infer what you can** from the prompt and codebase:
 
 - **Design system**: "Google" / "Material" / "M3" → Google. "Apple" / "iOS" / "HIG" → Apple. Nothing specified → Blended (default).
 - **Scope**: What the prompt describes — a page, a component, a fix, a redesign.
 - **Tech stack**: Check `package.json`, `tailwind.config.*`, `tsconfig.json` in the project.
+- **Viewport**: See detection rules below.
+
+**Viewport detection** (mandatory for page-level work):
+
+1. **Codebase signals**:
+   - React Native / Expo / Capacitor / Ionic → **Mobile**
+   - Electron / Tauri → **Desktop**
+   - Next.js / plain HTML / SvelteKit / Remix → **Web — ask user**
+
+2. **Prompt signals**:
+   - "app", "screen", "iOS", "tab bar" → likely mobile
+   - "page", "website", "dashboard", "sidebar", "macOS" → likely desktop
+   - "responsive" → both (desktop-first)
+
+3. **If ambiguous, ASK** (this is the #1 cause of wrong layouts):
+   > "What's the primary viewport?
+   > - **A** — Desktop (sidebar layouts, full-width, macOS-scale text)
+   > - **B** — Mobile (single column, bottom nav, iOS-scale text)
+   > - **C** — Responsive (desktop-first, collapses for mobile)
+   > - **D** — Your call (I'll default to responsive)"
+
+**Viewport changes EVERYTHING:**
+
+| Decision | Mobile | Desktop | Responsive |
+|----------|--------|---------|------------|
+| Layout | Single column | Sidebar + detail (split-view) | Split → collapses at 1024px |
+| Typography | iOS scale (Body 17px) | macOS scale (Body 13px) | iOS scale, macOS at >1024px |
+| Navigation | Tab bar / nav bar | Sidebar (persistent) | Sidebar → tab bar |
+| Touch targets | 44px minimum | 28px (pointer) | 44px safe default |
+| Key components | tab-bar, navigation-bar, action-sheet | sidebar, split-view, toolbar | Both sets |
 
 **Then ask about what's still unclear** — strictly one question at a time, waiting for each answer before asking the next. Never combine questions. Always include options when asking — never ask open-ended questions where a list of choices applies.
 
 Resolve in this priority order, stopping as soon as you have enough to proceed:
 - Scope (what exactly to build, who uses it)
+- Viewport target — desktop, mobile, or responsive (NEVER assume — see detection rules above)
 - Design system (if not specified or inferable)
 - Framework (if not in `package.json` — do NOT assume or default)
-- Device target (for page-level work)
 - Existing styles or brand constraints
 
 Never skip an unknown by making an assumption. Never combine multiple questions into one message.
@@ -69,6 +100,16 @@ references/
 - [Google M3 Overview](references/google/overview.md) — 34 colors, typography, elevation, motion
 - [Apple HIG Overview](references/apple/overview.md) — System colors, SF Pro, Liquid Glass, shadows
 - [Blended Design Principles](references/blended/design-principles.md) — Spacing, breakpoints, easing, accessibility
+
+### Page-Level Reference Files (read these for ANY page-level request)
+
+| Reference | Apple | Purpose |
+|-----------|-------|---------|
+| Page Patterns | [page-patterns.md](references/apple/page-patterns.md) | Hero layouts, section composition, spacing rhythm, feature showcases — how apple.com structures pages |
+| Editorial Typography | [editorial-type.md](references/apple/editorial-type.md) | Marketing type scale (48-96px display headlines) extending beyond UI scale |
+| Icons / SF Symbols | [icons.md](references/apple/icons.md) | SF Symbol-style SVG icons for web — stroke specs, 20 ready-to-use SVGs, sizing rules |
+
+**For landing pages, marketing pages, or any full-page request**: read ALL THREE of these files BEFORE component files. They override generic composition guidance with Apple-specific patterns.
 
 ### Component File Mapping
 
@@ -130,17 +171,17 @@ references/
 
 ---
 
-## Step 2: Lock System and Scope
+## Step 2: Lock System, Viewport, and Scope
 
-Using answers from Step 0 (or prompt/codebase if Step 0 was skipped), declare the locked system and scope:
+Using answers from Step 0 (or prompt/codebase if Step 0 was skipped), declare the locked system, viewport, and scope:
 
 - **Scope**: What the prompt describes — a page, a component, a fix, a redesign.
 - **Tech stack**: Confirmed from `package.json`, `tailwind.config.*`, `tsconfig.json`.
 
-**System lock — declare it explicitly:**
-> "Design system locked: **[Google / Apple / Blended]**. I will only read from `references/[google/apple/blended]/`. Files in the other directories are off-limits for this task."
+**System + viewport lock — declare both explicitly:**
+> "Design system: **[Google / Apple / Blended]**. Viewport: **[Desktop / Mobile / Responsive]**. I will only read from `references/[google/apple/blended]/`."
 
-This prevents drift — even if a component is missing from the chosen system, you stay within its directory.
+The viewport lock determines which type scale, layout paradigm, and component variants you use throughout. Do not change it mid-build. This prevents the #1 output mistake: building a mobile layout for a desktop user.
 
 ---
 
@@ -185,6 +226,19 @@ For page-level requests, think **expansively** about what components the page ne
 
 **Target: 8-15 component files per page.** If you're reading fewer than 8 files for a full page, you're not thinking broadly enough.
 
+**Desktop viewport changes the component set entirely:**
+
+The table above assumes mobile. If viewport is **Desktop**, swap in desktop-appropriate components:
+
+| User says + Desktop viewport | Instead of (mobile) | Use (desktop) |
+|------------------------------|---------------------|---------------|
+| "settings page" | navigation-bar, single-column list | **split-view + sidebar** + list (detail panel) + **toolbar** |
+| "dashboard" | tab-bar, stacked cards | **split-view + sidebar** + cards in grid + **toolbar** |
+| "email app" | navigation-bar, list, action-sheet | **split-view (3-col)** + sidebar + list + toolbar |
+| "landing page" | (same) | (same — landing pages are single-page regardless of viewport) |
+
+Desktop-specific reads: always include **split-view.md** and **sidebar.md** for page-level desktop work. Replace **navigation-bar.md** with **toolbar.md** as the top chrome. Use macOS type scale from **label.md**.
+
 **Missing component policy — ask, don't assume:**
 If a component you need doesn't exist in the locked system (e.g., Apple has no Chip, Google has no Picker), surface it to the user before proceeding:
 
@@ -201,7 +255,11 @@ If the user says "go ahead" / "your call" / "D" → default to **A** (closest na
 Read in this order:
 
 1. **Overview/principles file** — this gives you the design system's foundation: color roles, typography scale, elevation system, motion easing, platform-specific patterns
-2. **Every component file** you identified in 3B — not just a quick scan, but enough to note:
+2. **For page-level requests (Apple HIG)**, also read these BEFORE component files:
+   - [Page Patterns](references/apple/page-patterns.md) — Section composition, hero patterns, spacing rhythm
+   - [Editorial Typography](references/apple/editorial-type.md) — Marketing type scale (48-96px headlines)
+   - [Icons](references/apple/icons.md) — SF Symbol-style SVG icons for web (NEVER use emoji)
+3. **Every component file** you identified in 3B — not just a quick scan, but enough to note:
    - Which **variant** fits your context (e.g., Filled button for CTA, Outlined for secondary)
    - Key **dimensions** you'll use
    - **Tokens** you'll reference
@@ -211,7 +269,7 @@ Read in this order:
 | User chose      | Read first                                                              | Then read components                                   |
 | --------------- | ----------------------------------------------------------------------- | ------------------------------------------------------ |
 | Google / M3     | [google/overview.md](references/google/overview.md)                     | `google/components/{component}.md` for ALL identified  |
-| Apple / HIG     | [apple/overview.md](references/apple/overview.md)                       | `apple/components/{component}.md` for ALL identified   |
+| Apple / HIG     | [apple/overview.md](references/apple/overview.md) + page-level files    | `apple/components/{component}.md` for ALL identified   |
 | Blend (default) | [blended/design-principles.md](references/blended/design-principles.md) | `blended/components/{component}.md` for ALL identified |
 
 ### 3.5 Choose Variants Intentionally
@@ -233,6 +291,12 @@ Think about the PAGE, not just individual components:
 - **Color distribution**: Primary color appears on CTAs and key interactive elements — not everywhere. Surface colors create the foundation. Use the overview file's color role system.
 - **Spacing rhythm**: Use the design system's spacing grid (4px/8px for M3, 8pt grid for Apple). Consistent spacing separates production-grade from amateur.
 - **Visual breathing room**: Not every section needs to be packed. Generous whitespace between major sections. Let the typography and components breathe.
+
+**Viewport-specific composition (apply based on locked viewport from Step 2):**
+
+- **Desktop**: Use split-view with persistent sidebar (320px). macOS typography (Body 13px). 28px control heights. Hover is the primary interaction feedback. Generous whitespace — desktop screens have space. Full-width layout, not a narrow centered column.
+- **Mobile**: Single column, inset grouped sections. iOS typography (Body 17px). 44px touch targets. Press/active states are primary feedback. Bottom navigation.
+- **Responsive**: Desktop-first layout. Sidebar collapses at 1024px into hamburger or tab bar. Keep iOS type scale (more readable at all sizes). Test both breakpoints before delivering.
 
 ### 3.7 Both Light AND Dark Themes (non-negotiable)
 
@@ -337,6 +401,14 @@ Put design tokens in `tailwind.config.js` under `theme.extend.colors` so the who
 - Spatial composition and visual hierarchy
 - Purposeful motion and micro-interactions
 - Atmosphere and depth techniques
+
+**For landing pages and marketing pages (Apple HIG)**, the page-level reference files OVERRIDE generic composition guidance:
+- **NO card grids for features** — use one-feature-per-viewport with imagery (see `page-patterns.md`)
+- **NO alternating section backgrounds** — use whitespace (120-200px gaps between sections)
+- **NO emoji icons** — use SF Symbol-style SVGs from `icons.md`
+- **Headlines use editorial scale** (48-96px display sizes from `editorial-type.md`), not UI scale (34px max)
+- **Sections need imagery** — product screenshots, illustrations, or full-bleed photos. A text-only page is not Apple.
+- **Eyebrow → Headline → Body → CTA** is the per-section hierarchy (never skip the eyebrow)
 
 Apply these principles to every page — the difference between "technically correct" and "feels designed".
 

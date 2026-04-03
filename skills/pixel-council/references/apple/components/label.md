@@ -337,7 +337,7 @@ metadata:
 |-----------|----------|
 | < 600px | iOS type scale (values in this file), Body 17px |
 | 600-1024px | iPadOS scale, slightly larger titles possible |
-| > 1024px | macOS scale: Body 13px, Headline 13px/700, Large Title 26px |
+| > 1024px | **Use macOS type scale** — Body 13px, Headline 13px/700, Large Title 26px. Mandatory for desktop viewport. |
 
 ## Do / Don't
 

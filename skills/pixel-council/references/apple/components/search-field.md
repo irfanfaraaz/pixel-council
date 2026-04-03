@@ -396,7 +396,7 @@ metadata:
 |-----------|----------|
 | < 600px | Full width with 16px margins, cancel animates in on focus |
 | 600-1024px | Can be placed in navigation bar, narrower margins |
-| > 1024px | Fixed max-width (~400px), can be part of toolbar |
+| > 1024px | **Desktop: embed in toolbar**, fixed max-width 400px. Not full-width. |
 
 ## Do / Don't
 

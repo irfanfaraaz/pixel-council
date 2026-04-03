@@ -373,7 +373,7 @@ metadata:
 |-----------|----------|
 | < 600px | Large title variant, full width, 16px horizontal padding |
 | 600-1024px | Inline title for pushed views, optional large title for root |
-| > 1024px | Thinner bar, can integrate with sidebar layout, 24px padding |
+| > 1024px | **Desktop: use toolbar.md instead.** If used, inline title only (not large title), integrate as detail-panel header inside split-view. 24px padding. |
 
 ## Do / Don't
 

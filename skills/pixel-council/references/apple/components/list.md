@@ -302,7 +302,7 @@ metadata:
 |-----------|----------|
 | < 600px | Full-width plain list; grouped with 16px side margin |
 | 600-1024px | Inset grouped with 20px side margin; split view possible |
-| > 1024px | Sidebar + detail layout; max-width on list panel |
+| > 1024px | **Desktop: use as sidebar navigation list (28px rows, macOS scale) or detail-panel content.** Always pair with split-view.md. Max-width 400px for sidebar panel. |
 
 ## Do / Don't
 

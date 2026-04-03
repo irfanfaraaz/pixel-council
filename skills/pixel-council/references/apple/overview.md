@@ -329,6 +329,18 @@ Font stack: `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
 - Support Dynamic Type (200% text enlargement minimum)
 - Support Bold Text accessibility feature
 
+### Which Scale to Use (by Viewport)
+
+| Viewport | Type Scale | Body Size | Control Height | Layout Pattern |
+|----------|-----------|-----------|----------------|----------------|
+| Mobile / iOS web | iOS scale | 17px | 44px touch targets | Single column |
+| Desktop / macOS web | macOS scale | 13px | 28px controls | Sidebar + detail |
+| Responsive | iOS scale (default) | 17px | 44px (safe) | Split-view → collapse |
+
+When building for **desktop web**, use the macOS type scale and sidebar + detail layout (split-view.md + sidebar.md).
+When building for **mobile web**, use the iOS type scale and single-column layout.
+When **responsive**, default to iOS scale (readable everywhere) but use desktop layout above 1024px.
+
 ---
 
 ## Layout & Spacing
