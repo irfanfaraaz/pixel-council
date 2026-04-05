@@ -406,6 +406,85 @@ Reversed variant: add `apple-page__feature-grid--reversed` to flip image/text or
 - **Screen reader**: Eyebrows read before headings via DOM order, stat numbers associated with labels by proximity
 - **Reduced motion**: All transitions and transforms disabled via `prefers-reduced-motion: reduce`
 
+## Content Block Patterns
+
+These patterns describe what goes INSIDE cards and sections — the content composition that makes output look Apple-native vs AI-generated.
+
+### Stat Cards (Dashboard / Metrics)
+Structure: Icon accent (optional) → Large number → Small label → Optional trend indicator
+```html
+<article class="apple-page__stat-card">
+  <div class="apple-page__stat-icon" style="color: var(--apple-color-green)">
+    <!-- Lucide or SF-style SVG icon, 28px -->
+  </div>
+  <div class="apple-page__stat-number">128</div>
+  <div class="apple-page__stat-label">Tasks Completed</div>
+  <div class="apple-page__stat-trend apple-page__stat-trend--up">+12% this week</div>
+</article>
+```
+```css
+.apple-page__stat-number { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; color: var(--apple-page-text); line-height: 1.1; }
+.apple-page__stat-label { font-size: 12px; font-weight: 400; color: var(--apple-page-text-secondary); margin-top: 4px; }
+.apple-page__stat-trend { font-size: 12px; font-weight: 500; margin-top: 8px; }
+.apple-page__stat-trend--up { color: var(--apple-color-green); }
+.apple-page__stat-trend--down { color: var(--apple-color-red); }
+.apple-page__stat-icon { width: 28px; height: 28px; margin-bottom: 12px; }
+```
+
+### Decorative Emoji Usage
+Apple uses native Unicode emoji at large sizes as visual accents — NOT as icon replacements.
+```css
+.apple-page__emoji { font-size: 48px; line-height: 1; margin-bottom: 16px; }
+```
+Use sparingly (1-2 per section max). Examples: 🎯 for goals, ⚡ for performance, 🔒 for privacy. On Apple devices these render as Apple emoji automatically. For cross-platform consistency, recommend Twemoji CDN fallback.
+
+### Icon Recommendations for Web
+SF Symbols are NOT licensed for web redistribution. Use these alternatives:
+- **Lucide** (recommended): 1,400+ icons, SF Symbols aesthetic, MIT licensed
+  - CDN: `<script src="https://unpkg.com/lucide@latest"></script>`
+  - Or individual SVGs: `https://unpkg.com/lucide-static@latest/icons/{name}.svg`
+- **Phosphor Icons**: 9,000+ icons in 6 weights, MIT licensed
+- **Heroicons**: 300+ icons by Tailwind team, MIT licensed
+- **Hand-drawn SVGs**: See `icons.md` for 20 ready-to-use SF-style SVGs
+
+### Image-to-Text Ratio
+In feature showcases and content blocks, imagery should dominate:
+- **Feature sections**: Image occupies 50-60% of section width. Text is secondary.
+- **Cards with media**: Image is full-bleed at top, text below with 16px padding.
+- **Hero sections**: Product shot is the centerpiece. Text floats above or beside.
+- **Stat cards**: NO images. Just number + label + optional icon accent.
+- **Never**: 100% text sections without visual relief. Add an image, illustration, gradient, or chart.
+
+### CSS Gradients for Visual Interest
+Apple uses subtle gradients instead of flat backgrounds for emphasis sections:
+```css
+/* Subtle blue wash for CTA sections */
+.apple-page__section--accent {
+  background: linear-gradient(180deg, rgba(0, 122, 255, 0.04) 0%, rgba(0, 122, 255, 0) 100%);
+}
+/* Dark hero gradient overlay */
+.apple-page__hero--dark {
+  background: linear-gradient(180deg, #1D1D1F 0%, #000000 100%);
+  color: #F5F5F7;
+}
+/* Card with subtle gradient background */
+.apple-page__card--gradient {
+  background: linear-gradient(135deg, #F5F5F7 0%, #FFFFFF 100%);
+}
+```
+
+### Progress & Data Display
+Numbers are the hero — make them big:
+```css
+/* Large metric number */
+.apple-page__metric { font-size: 56px; font-weight: 700; letter-spacing: -1px; line-height: 1; font-variant-numeric: tabular-nums; }
+/* Percentage with ring */
+.apple-page__ring-label { font-size: 22px; font-weight: 700; }
+/* Progress bar container */
+.apple-page__progress { height: 4px; border-radius: 2px; background: rgba(0,0,0,0.08); overflow: hidden; }
+.apple-page__progress-fill { height: 100%; border-radius: 2px; background: var(--apple-color-blue); transition: width 600ms cubic-bezier(0.4, 0, 0.2, 1); }
+```
+
 ## Do / Don't
 
 | Do | Don't |
@@ -422,3 +501,9 @@ Reversed variant: add `apple-page__feature-grid--reversed` to flip image/text or
 | Eyebrow - Headline - Body - CTA hierarchy per section | Just a headline and a button with no context |
 | Alternate image left/right across feature sections | Same layout repeated for every feature |
 | One font family (SF Pro) at 3-4 weights max | Multiple display fonts mixed on one page |
+| Use native Unicode emoji at 48px as decorative accents (sparingly) | Use emoji as icon replacements for every feature |
+| Use Lucide/Phosphor icons for web (MIT licensed, SF Symbols aesthetic) | Extract and redistribute actual SF Symbols on web |
+| Make stat numbers big (28-56px) with small labels below | Use same font-size for numbers and labels |
+| Use CSS gradients for subtle visual interest in sections | Use flat solid colors for every section background |
+| Images should occupy 50%+ of feature section width | Build text-only sections without any visual relief |
+| Use `font-variant-numeric: tabular-nums` on all numbers | Let numbers shift layout when values change |
