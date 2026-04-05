@@ -1,6 +1,6 @@
 # Pixel Council
 
-A Claude Code plugin that produces production-grade UI — not AI-generated boilerplate. It encodes the real design specifications from Google Material Design 3 and Apple Human Interface Guidelines into 80 component reference files that Claude reads before writing any code.
+A Claude Code plugin that produces production-grade UI — not AI-generated boilerplate. It encodes the real design specifications from Google Material Design 3 and Apple Human Interface Guidelines into 86 reference files that Claude reads before writing any code.
 
 ## The Problem
 
@@ -22,8 +22,8 @@ Pixel Council gives Claude the actual design system specs — resolved hex value
 
 | Company | Coverage |
 |---------|----------|
-| **Google Material Design 3** | 32 components, 34 color roles (light+dark hex), elevation box-shadows, typescale, motion easing |
-| **Apple HIG** | 33 components, 15 system colors (light+dark hex), SF Pro font stack, Liquid Glass CSS, shadow system |
+| **Google Material Design 3** | 32 components + 3 page-level refs (icons, editorial type, page patterns), 34 color roles, elevation, typescale, Material Symbols, motion easing |
+| **Apple HIG** | 33 components + 3 page-level refs (SF Symbols, editorial type, page patterns), 15 system colors, SF Pro, Liquid Glass, shadow system |
 | **Blended** (default) | 12 components combining Google's systematic tokens with Apple's refinement |
 
 ## Plugin Components
@@ -38,7 +38,7 @@ Pixel Council gives Claude the actual design system specs — resolved hex value
 ### Option A: Add marketplace and Install (Recommended)
 
 ```bash
-/plugin marketplace add shubham170102/pixel-council
+/plugin marketplace add blinkz-ai/pixel-council
 /plugin install pixel-council
 ```
 
@@ -55,7 +55,7 @@ You should see pixel-council listed.
 Clone the repo and load it directly as a plugin:
 
 ```bash
-git clone https://github.com/shubham170102/pixel-council.git
+git clone https://github.com/blinkz-ai/pixel-council.git
 claude --plugin-dir ./pixel-council
 ```
 
@@ -70,7 +70,7 @@ alias claude-ui="claude --plugin-dir /path/to/pixel-council"
 If you prefer the traditional skill approach without the plugin system:
 
 ```bash
-git clone https://github.com/shubham170102/pixel-council.git
+git clone https://github.com/blinkz-ai/pixel-council.git
 cd pixel-council
 
 # Copy skill + references
@@ -146,7 +146,7 @@ Check if my dark mode implementation matches the spec
 5. Claude translates the reference HTML+CSS into your project's framework (React, Tailwind, Vue, etc.)
 6. Result: pixel-perfect UI with proper tokens, states, and accessibility — not generic AI output
 
-## What's Inside (80 files, 30,000+ lines)
+## What's Inside (86 files, 35,000+ lines)
 
 Every component file is a **self-contained implementation guide**. Claude reads ONE file and gets everything needed — no guessing.
 
@@ -163,16 +163,20 @@ Each file contains:
 
 ```
 skills/pixel-council/references/
-├── google/                    # 32 components + design system overview
+├── google/                    # 35 files (32 components + 3 page-level)
 │   ├── overview.md            # 34 color roles, elevation shadows, typescale, motion easing
+│   ├── icons.md               # Material Symbols CDN, variable axes, 20 SVG fallbacks
+│   ├── editorial-type.md      # Marketing type scale 88px→11px, Overline labels
+│   ├── page-patterns.md       # Section patterns, 12-col grid, tonal elevation
 │   └── components/
 │       ├── button.md          # 5 variants, ripple keyframes, state layers
-│       ├── text-field.md      # Filled/outlined, floating label animation
-│       ├── card.md            # Elevated/filled/outlined, hover elevation
-│       └── ... (29 more)
+│       └── ... (31 more)
 │
-├── apple/                     # 33 components + design system overview
+├── apple/                     # 36 files (33 components + 3 page-level)
 │   ├── overview.md            # System colors, Liquid Glass CSS, SF Pro stack, shadows
+│   ├── icons.md               # SF Symbols SVGs, stroke specs, 20-icon library
+│   ├── editorial-type.md      # Marketing type scale 96px→12px, eyebrow labels
+│   ├── page-patterns.md       # apple.com section patterns, hero layouts, spacing rhythm
 │   └── components/
 │       ├── button.md          # 4 styles, pressed opacity, continuous corners
 │       └── ... (32 more)
@@ -195,7 +199,7 @@ pixel-council/
 ├── skills/
 │   └── pixel-council/
 │       ├── SKILL.md              # Builds UI from reference specs
-│       └── references/           # 80 component reference files
+│       └── references/           # 86 reference files
 │           ├── google/           # Material Design 3
 │           ├── apple/            # Human Interface Guidelines
 │           └── blended/          # Best-of-both (default)

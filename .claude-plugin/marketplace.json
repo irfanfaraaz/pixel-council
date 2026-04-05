@@ -6,20 +6,20 @@
     },
     "metadata": {
         "description": "Production-grade UI from real design system specs - pixel-perfect components with design tokens, states, and accessibility",
-        "homepage": "https://github.com/shubham170102/pixel-council"
+        "homepage": "https://github.com/blinkz-ai/pixel-council"
     },
     "plugins": [
         {
             "name": "pixel-council",
             "version": "1.0.0",
             "source": "./",
-            "description": "Production-grade UI from real design system specs. 80 reference files with exact hex colors, pixel dimensions, complete CSS, dark mode tokens, and interaction states from Google Material Design 3 and Apple HIG.",
+            "description": "Production-grade UI from real design system specs. 86 reference files with exact hex colors, pixel dimensions, complete CSS, dark mode tokens, and interaction states from Google Material Design 3 and Apple HIG.",
             "author": {
                 "name": "Shubham Shrivastava",
                 "email": "shub.shrivas17@gmail.com"
             },
-            "homepage": "https://github.com/shubham170102/pixel-council",
-            "repository": "https://github.com/shubham170102/pixel-council",
+            "homepage": "https://github.com/blinkz-ai/pixel-council",
+            "repository": "https://github.com/blinkz-ai/pixel-council",
             "license": "MIT",
             "keywords": [
                 "ui",
