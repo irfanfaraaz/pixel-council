@@ -239,6 +239,15 @@ The table above assumes mobile. If viewport is **Desktop**, swap in desktop-appr
 
 Desktop-specific reads: always include **split-view.md** and **sidebar.md** for page-level desktop work. Replace **navigation-bar.md** with **toolbar.md** as the top chrome. Use macOS type scale from **label.md**.
 
+**CRITICAL: Dashboard vs Landing Page layout distinction:**
+
+| Request type | Layout mode | Width behavior | CSS pattern |
+|-------------|-------------|---------------|-------------|
+| Landing page, marketing page, product page | **Centered max-width** | `max-width: 980-1200px; margin: 0 auto` | `.md-page__wrap` / `.apple-page__wrap` |
+| Dashboard, admin panel, app shell, settings | **Fill available space** | `flex: 1; no max-width` on detail panel | `.md-dashboard` / `.apple-dashboard` (from page-patterns.md) |
+
+Dashboards must NEVER use the centered `__wrap` class. The content should fill the entire detail panel after the sidebar. Use the dashboard-specific CSS classes from `page-patterns.md`.
+
 **Missing component policy — ask, don't assume:**
 If a component you need doesn't exist in the locked system (e.g., Apple has no Chip, Google has no Picker), surface it to the user before proceeding:
 

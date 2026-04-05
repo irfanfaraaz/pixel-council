@@ -232,6 +232,22 @@ Reversed variant: add `md-page__feature-grid--reversed` and `md-page__feature--a
 .md-page__wrap { max-width: var(--md-page-max-width); margin: 0 auto; padding: 0 var(--md-page-gutter); }
 .md-page__wrap--narrow { max-width: 800px; }
 
+/* ===== DASHBOARD LAYOUT (sidebar + detail panel — NO max-width centering) ===== */
+/* Use this for dashboards, app shells, admin panels — NOT for marketing/landing pages */
+.md-dashboard { display: flex; height: 100vh; overflow: hidden; font-family: var(--md-page-font); background: var(--md-page-surface); }
+.md-dashboard__sidebar { width: 256px; flex-shrink: 0; background: var(--md-page-surface-container); border-right: 1px solid var(--md-page-outline-variant); display: flex; flex-direction: column; overflow-y: auto; }
+.md-dashboard__main { flex: 1; display: flex; flex-direction: column; overflow-y: auto; min-width: 0; }
+.md-dashboard__toolbar { position: sticky; top: 0; z-index: 10; height: 64px; display: flex; align-items: center; padding: 0 var(--md-page-gutter); background: var(--md-page-surface); border-bottom: 1px solid var(--md-page-outline-variant); gap: 16px; }
+.md-dashboard__content { flex: 1; padding: var(--md-page-gutter); }
+/* Dashboard cards grid: fills available width, no max-width constraint */
+.md-dashboard__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.md-dashboard__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--md-page-gutter); margin-top: var(--md-page-gutter); }
+@media (max-width: 839px) { .md-dashboard__row { grid-template-columns: 1fr; } }
+@media (max-width: 599px) {
+  .md-dashboard__sidebar { display: none; }
+  .md-dashboard__cards { grid-template-columns: 1fr; }
+}
+
 /* ===== OVERLINE & SECTION TITLES ===== */
 .md-page__overline { font-family: var(--md-page-font); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: var(--md-page-primary); margin: 0 0 16px; }
 .md-page__section-title { font-family: var(--md-page-font); font-size: 45px; font-weight: 400; line-height: 1.16; color: var(--md-page-on-surface); margin: 0 0 16px; text-align: center; }

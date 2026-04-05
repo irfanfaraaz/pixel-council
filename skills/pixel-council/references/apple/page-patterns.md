@@ -220,6 +220,28 @@ Reversed variant: add `apple-page__feature-grid--reversed` to flip image/text or
 .apple-page__wrap { max-width: var(--apple-page-max-width); margin: 0 auto; padding: 0 var(--apple-page-gutter); }
 .apple-page__wrap--narrow { max-width: 720px; }
 
+/* ===== DASHBOARD LAYOUT (sidebar + detail panel — NO max-width centering) ===== */
+/* Use this for dashboards, app shells, admin panels — NOT for marketing/landing pages */
+.apple-dashboard { display: flex; height: 100vh; overflow: hidden; font-family: var(--apple-page-font); background: var(--apple-page-bg); -webkit-font-smoothing: antialiased; }
+.apple-dashboard__sidebar { width: 260px; flex-shrink: 0; background: rgba(255,255,255,0.72); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-right: 0.5px solid var(--apple-page-separator); display: flex; flex-direction: column; overflow-y: auto; padding: 8px; }
+.apple-dashboard__main { flex: 1; display: flex; flex-direction: column; overflow-y: auto; min-width: 0; background: var(--apple-page-bg); }
+.apple-dashboard__toolbar { position: sticky; top: 0; z-index: 10; height: 44px; display: flex; align-items: center; padding: 0 16px; background: rgba(255,255,255,0.72); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 0.5px solid var(--apple-page-separator); gap: 12px; }
+.apple-dashboard__content { flex: 1; padding: 20px; }
+/* Dashboard cards grid: fills available width, no max-width constraint */
+.apple-dashboard__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+.apple-dashboard__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+@media (prefers-color-scheme: dark) {
+  .apple-dashboard__sidebar { background: rgba(30,30,30,0.72); }
+  .apple-dashboard__toolbar { background: rgba(30,30,30,0.72); }
+}
+.dark .apple-dashboard__sidebar { background: rgba(30,30,30,0.72); }
+.dark .apple-dashboard__toolbar { background: rgba(30,30,30,0.72); }
+@media (max-width: 1023px) {
+  .apple-dashboard__sidebar { position: fixed; left: 0; top: 0; bottom: 0; z-index: 50; transform: translateX(-100%); transition: transform 300ms ease-in-out; }
+  .apple-dashboard__sidebar--open { transform: translateX(0); }
+  .apple-dashboard__row { grid-template-columns: 1fr; }
+}
+
 /* ===== HERO ===== */
 .apple-page__hero { padding: var(--apple-page-hero-gap) 0 80px; text-align: center; background: var(--apple-page-bg); color: var(--apple-page-text); }
 .apple-page__eyebrow { font-family: var(--apple-page-font); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--apple-page-link); margin: 0 0 16px; }
