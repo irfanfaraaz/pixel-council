@@ -18,41 +18,50 @@ if [ -f "$MARKETPLACE" ]; then
   fi
 fi
 
+REF_COUNT=$(find "$SCRIPT_DIR/skills/pixel-council/references" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+
 echo ""
-echo "  Pixel Council Installer"
-echo "  ─────────────────────────"
+echo "  Pixel Council Installer ($REF_COUNT reference files)"
+echo "  ─────────────────────────────────────────────"
 echo ""
 echo "  How would you like to install?"
 echo ""
-echo "  1) Plugin  — load via claude --plugin-dir (recommended)"
-echo "              Best for: testing, development, full plugin features"
+echo "  1) Plugin  — install via Claude Code's plugin marketplace"
+echo "              Run these commands in the Claude Code terminal:"
+echo "              /plugin marketplace add blinkz-ai/pixel-council"
+echo "              /plugin install pixel-council"
+echo "              /reload-plugins"
 echo ""
-echo "  2) Skill   — install to ~/.agents/skills/ with symlink"
-echo "              Best for: always-on access without flags"
+echo "  2) Skill   — install locally to ~/.agents/skills/"
+echo "              Copies files directly — always available, no plugin system needed"
 echo ""
-echo "  3) Both    — install skill globally + print plugin-dir path"
-echo ""
-printf "  Choose [1/2/3]: "
+printf "  Choose [1/2]: "
 read -r choice
 
 case "$choice" in
   1)
     echo ""
-    echo "  Plugin mode selected."
+    echo "  Plugin Install"
+    echo "  ──────────────"
     echo ""
-    echo "  To start Claude Code with Pixel Council loaded:"
+    echo "  Run these 3 commands inside Claude Code:"
     echo ""
-    echo "    claude --plugin-dir \"$SCRIPT_DIR\""
+    echo "    1. /plugin marketplace add blinkz-ai/pixel-council"
+    echo "    2. /plugin install pixel-council"
+    echo "    3. /reload-plugins"
     echo ""
-    echo "  To make it permanent, add an alias to your shell profile:"
+    echo "  To verify, run /plugin and check the Installed tab."
+    echo "  The skill will be available as /pixel-council"
     echo ""
-    echo "    alias claude-ui='claude --plugin-dir \"$SCRIPT_DIR\"'"
+    echo "  To update later:"
+    echo "    /plugin → Marketplaces → Update marketplace"
     echo ""
-    echo "  Skills will be namespaced as /pixel-council:pixel-council"
+    echo "  To uninstall:"
+    echo "    /plugin marketplace remove blinkz-ai/pixel-council"
     echo ""
     ;;
 
-  2|3)
+  2)
     SKILL_DIR="$HOME/.agents/skills/pixel-council"
     CLAUDE_SKILLS="$HOME/.claude/skills"
     CLAUDE_AGENTS="$HOME/.claude/agents"
@@ -70,6 +79,11 @@ case "$choice" in
     rm -rf "$SKILL_DIR/references"
     cp -r "$SCRIPT_DIR/skills/pixel-council/references" "$SKILL_DIR/"
 
+    # Copy composition guides
+    for f in composition-principles.md theme-implementation.md; do
+      [ -f "$SCRIPT_DIR/skills/pixel-council/$f" ] && cp "$SCRIPT_DIR/skills/pixel-council/$f" "$SKILL_DIR/"
+    done
+
     # Copy agent
     cp "$SCRIPT_DIR/agents/ui-reviewer.md" "$CLAUDE_AGENTS/"
 
@@ -77,22 +91,15 @@ case "$choice" in
     rm -f "$CLAUDE_SKILLS/pixel-council"
     ln -s "../../.agents/skills/pixel-council" "$CLAUDE_SKILLS/pixel-council"
 
+    INSTALLED_COUNT=$(find "$SKILL_DIR/references" -name "*.md" | wc -l | tr -d ' ')
+
     echo ""
     echo "  Installed:"
-    echo "    Skill:      $SKILL_DIR/SKILL.md"
-    REF_COUNT=$(find "$SKILL_DIR/references" -name "*.md" | wc -l | tr -d ' ')
-    echo "    References:  $SKILL_DIR/references/ ($REF_COUNT files)"
+    echo "    Skill:       $SKILL_DIR/SKILL.md"
+    echo "    References:  $SKILL_DIR/references/ ($INSTALLED_COUNT files)"
     echo "    Agent:       $CLAUDE_AGENTS/ui-reviewer.md"
     echo "    Symlink:     $CLAUDE_SKILLS/pixel-council"
     echo ""
-
-    if [ "$choice" = "3" ]; then
-      echo "  Plugin mode also available:"
-      echo ""
-      echo "    claude --plugin-dir \"$SCRIPT_DIR\""
-      echo ""
-    fi
-
     echo "  Restart Claude Code, then type /skills to verify."
     echo "  Use /pixel-council or just ask Claude to build any UI."
     echo ""
