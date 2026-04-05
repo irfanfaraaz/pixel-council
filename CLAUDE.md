@@ -13,12 +13,18 @@ pixel-council/
 ├── skills/
 │   └── pixel-council/
 │       ├── SKILL.md                   # The skill prompt (builds UI from specs)
-│       └── references/                # 80 self-contained component reference files
+│       └── references/                # 86 reference files
 │           ├── google/                # Google Material Design 3
 │           │   ├── overview.md        # Full M3 token system (34 colors, typography, elevation, motion)
+│           │   ├── icons.md           # Material Symbols CDN, variable axes, 20 SVG fallbacks
+│           │   ├── editorial-type.md  # Marketing type scale 88px→11px
+│           │   ├── page-patterns.md   # Section patterns, 12-col grid, tonal elevation
 │           │   └── components/        # 32 per-component specs with complete HTML+CSS
 │           ├── apple/                 # Apple HIG
 │           │   ├── overview.md        # System colors, SF Pro, Liquid Glass, shadows
+│           │   ├── icons.md           # SF Symbols SVGs, stroke specs, 20-icon library
+│           │   ├── editorial-type.md  # Marketing type scale 96px→12px
+│           │   ├── page-patterns.md   # apple.com section patterns, hero layouts
 │           │   └── components/        # 33 per-component specs with complete HTML+CSS
 │           └── blended/               # Best-of-both defaults (DEFAULT)
 │               ├── design-principles.md

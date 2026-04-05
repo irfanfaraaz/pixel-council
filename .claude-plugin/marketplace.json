@@ -1,11 +1,11 @@
 {
     "name": "pixel-council",
     "owner": {
-        "name": "Shubham Shrivastava",
-        "email": "shub.shrivas17@gmail.com"
+        "name": "Blinkz",
+        "email": "admin@blinkzai.org"
     },
     "metadata": {
-        "description": "Production-grade UI from real design system specs - pixel-perfect components with design tokens, states, and accessibility",
+        "description": "Build production-grade UI using real design system specs from the world's top companies — so Claude builds like a senior designer, not a prompt guesser.",
         "homepage": "https://github.com/blinkz-ai/pixel-council"
     },
     "plugins": [
@@ -13,10 +13,10 @@
             "name": "pixel-council",
             "version": "1.1.1",
             "source": "./",
-            "description": "Production-grade UI from real design system specs. 86 reference files with exact hex colors, pixel dimensions, complete CSS, dark mode tokens, and interaction states from Google Material Design 3 and Apple HIG.",
+            "description": "Build production-grade UI using real design system specs from the world's top companies — so Claude builds like a senior designer, not a prompt guesser.",
             "author": {
-                "name": "Shubham Shrivastava",
-                "email": "shub.shrivas17@gmail.com"
+                "name": "Blinkz",
+                "email": "admin@blinkzai.org"
             },
             "homepage": "https://github.com/blinkz-ai/pixel-council",
             "repository": "https://github.com/blinkz-ai/pixel-council",

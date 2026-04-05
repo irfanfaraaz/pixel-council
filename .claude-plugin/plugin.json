@@ -1,8 +1,8 @@
 {
   "name": "pixel-council",
-  "description": "Production-grade UI from real design system specs. 80 reference files with exact hex colors, pixel dimensions, complete CSS, dark mode tokens, and interaction states from Google Material Design 3 and Apple HIG.",
+  "description": "Build production-grade UI using real design system specifications from the world's top companies. Includes complete design tokens, interaction states, page composition patterns, icon systems, and editorial typography — so Claude builds like a senior designer, not a prompt guesser.",
   "author": {
-    "name": "Shubham Shrivastava",
-    "email": "shub.shrivas17@gmail.com"
+    "name": "Blinkz",
+    "email": "admin@blinkzai.org"
   }
 }
